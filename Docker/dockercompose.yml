@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  crawler:
+    build: ./crawler/
+    networks:
+      - lan_crawler
+    image: crawler:v1
+    container_name: crawler
+#    ports:
+#      - 10011:80
+#    volumes:
+#      - /srv/Avtodor_front_1/:/usr/share/nginx/html/
+
+
+  ui:
+    build: ./ui/
+    networks:
+      - lan_crawler
+    image: ui:v1
+    container_name: ui
+#    ports:
+#      - 10011:80
+#    volumes:
+#      - /srv/Avtodor_front_1/:/usr/share/nginx/html/
+
+
+  rabbitmq:
+    build: ./rabbitmq/
+    networks:
+      - lan_crawler
+    image: rabbitmq:v1
+    container_name: rabbitmq
+    ports: 
+      - 8080:15672
+
+  mongo:
+    image: mongo
+    networks:
+      - lan_crawler
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: user
+
+networks:
+  lan_crawler:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet:  10.111.0.1/16
