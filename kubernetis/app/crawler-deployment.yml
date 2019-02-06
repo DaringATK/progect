@@ -32,9 +32,9 @@ spec:
         - name: RMQ_QUEUE
           value: derp
         - name: RMQ_USERNAME
-          value: derp
+          value: admin
         - name: RMQ_PASSWORD
-          value: derp
+          value: admin
         - name: CHECK_INTERVAL
           value: "60"
         - name: EXCLUDE_URLS

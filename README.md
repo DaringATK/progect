@@ -60,4 +60,5 @@ gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
 8) kubectl apply -f rabbitmq-ingress.yml
 9) kubectl apply -f ui-crawler-deployment.yml
 10) kubectl apply -f ui-crawler-service.yml
-11)
+11) kubectl apply -f crawler-deployment.yml
+12) kubectl apply -f crawler-service.yml
