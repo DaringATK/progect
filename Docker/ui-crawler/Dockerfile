@@ -1,7 +1,5 @@
 FROM python:3.6-alpine
 
-ENV MONGO mongodb
-ENV MONGO_PORT 27017
 COPY ./src/ /app/
 COPY ./tests /tests
 COPY /requirements-test.txt /

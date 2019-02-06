@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ui-crawler
+  labels:
+    app: crawler
+    component: ui-crawler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: ui-crawler
+  template:
+    metadata:
+      name: ui-crawler-pod
+      labels:
+        app: crawler
+        component: ui-crawler
+    spec:
+      containers:
+      - image: agnium/ui-crawler:latest
+        name: ui-crawler
+        env:
+        - name: MONGO
+          value: mongodb
+        - name: MONGO_PORT
+          value: "27017"

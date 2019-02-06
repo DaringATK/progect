@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: crawler
+  labels:
+    app: crawler
+    component: crawler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: crawler
+  template:
+    metadata:
+      name: crawler
+      labels:
+        app: crawler
+        component: crawler
+    spec:
+      containers:
+      - image: agnium/crawler:latest
+        name: crawler
+        env:
+        - name: MONGO
+          value: mongodb
+        - name: MONGO_PORT
+          value: "27017"
+        - name: RMQ_HOST
+          value: rabbitmq
+        - name: RMQ_QUEUE
+          value: derp
+        - name: RMQ_USERNAME
+          value: derp
+        - name: RMQ_PASSWORD
+          value: derp
+        - name: CHECK_INTERVAL
+          value: "60"
+        - name: EXCLUDE_URLS
+          value: '.*github.com'
