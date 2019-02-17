@@ -37,7 +37,7 @@ ENV MONGO_PORT 27017
 
 
 
-
+старт приложения
 1) Поднимаем кластер куба 
 • Тип машины - небольшая машина (1,7 ГБ) (для экономии ресурсов)
 • Размер - 2
@@ -62,3 +62,13 @@ gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
 10) kubectl apply -f ui-crawler-service.yml
 11) kubectl apply -f crawler-deployment.yml
 12) kubectl apply -f crawler-service.yml
+
+старт мониторинга
+kubectl apply -f tiller.yml
+helm init --service-account tiller
+kubectl get pods -n kube-system --selector app=helm
+helm install stable/nginx-ingress --name nginx
+kubectl get svc
+sudo nano /etc/hosts (/etc/hosts<35.239.145.155 reddit reddit-prometheus reddit-grafana reddit-non-prod production reddit-kibana staging prod)
+helm upgrade prom . -f custom_values.yml --install
+helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
