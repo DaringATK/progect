@@ -2,12 +2,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ui
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
 spec:
   rules:
   - http:
       paths:
       - path: /*
         backend:
-          serviceName: ui-crawler          
+          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}
           servicePort: 8000
