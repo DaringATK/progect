@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "crawler.fullname" . }}
+  labels:
+    app: reddit
+    component: crawler
+    release: {{ .Release.Name }}
+spec:
+  ports:
+  - name: {{ template "crawler.fullname" . }}
+    port: 9292
+    protocol: TCP
+    targetPort: 9292
+  - name: metrics
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: reddit
+    component: crawler
+    release: {{ .Release.Name }}

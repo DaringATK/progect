@@ -1,0 +1,6 @@
+image:
+ repository: dyavolmgn/ui
+ tag: 0.0.1
+
+ingress:
+  class: gce

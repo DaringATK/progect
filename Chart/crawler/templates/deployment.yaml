@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "crawler.fullname" . }}
+  labels:
+    app: reddit
+    component: crawler
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reddit
+      component: crawler
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      name: crawler
+      labels:
+        app: reddit
+        component: crawler
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - image: "{{ .Values.image.repository }}/ui:{{ .Values.image.tag }}”
+        name: crawler
+        env:
+        - name: MONGO
+          value: {{ .Values.databaseHost }} 
+        - name: MONGO_PORT
+          value: "27017"
+        - name: RMQ_HOST
+          value: {{ .Values.queueHost | default (printf "%s-rabbitmq" .Release.Name) }}
+        - name: RMQ_QUEUE
+          value: derp
+        - name: RMQ_USERNAME
+          value: admin
+        - name: RMQ_PASSWORD
+          value: admin
+        - name: CHECK_INTERVAL
+          value: "60"
+        - name: EXCLUDE_URLS
+          value: '.*github.com'
