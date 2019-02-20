@@ -4,8 +4,8 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   labels:
-    app: reddit
-    component: ui
+    app: crawler
+    component: ui-crawler
     release: {{ .Release.Name }}
 spec:
   replicas: 1
@@ -13,23 +13,23 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: reddit
-      component: ui
+      app: crawler
+      component: ui-crawler
       release: {{ .Release.Name }}
   template:
     metadata:
-      name: ui-pod
+      name: ui-crawler-pod
       labels:
-        app: reddit
-        component: ui
+        app: crawler
+        component: ui-crawler
         release: {{ .Release.Name }}
     spec:
       containers:
       - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-        name: ui
+        name: ui-crawler
         ports:
         - containerPort: 8000
-          name: ui
+          name: ui-crawler
           protocol: TCP
         env:
         - name: MONGO

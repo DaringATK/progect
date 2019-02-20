@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-{{ .Chart.Name }}
   labels:
     app: crawler
-    component: ui
+    component: ui-crawler
     release: {{ .Release.Name }}
 spec:
   type: NodePort
@@ -15,5 +15,5 @@ spec:
     targetPort: 8000    
   selector:
     app: crawler
-    component: ui
+    component: ui-crawler
     release: {{ .Release.Name }}
