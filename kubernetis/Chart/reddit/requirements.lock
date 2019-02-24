@@ -12,4 +12,4 @@ dependencies:
   repository: file://../rabbitmq
   version: 1.0.0
 digest: sha256:5802b78309d78841578998b355069902a889e285e13c3eaf509f883ca65bbe96
-generated: 2019-02-24T17:40:50.96460394+03:00
+generated: 2019-02-24T17:59:33.800015383+03:00
