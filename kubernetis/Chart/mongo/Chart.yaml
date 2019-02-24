@@ -1,6 +1,6 @@
 ---
 name: mongo
-version: 1.0.0
+version: 3.2.0
 description: db
 maintainers:
  - name: Derp Derp

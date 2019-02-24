@@ -1,7 +1,7 @@
 ---
 image:
- repository: chromko/post
- tag: latest
+ repository: dyavolmgn/crawler
+ tag: 0.0.1
 
-databaseHost:
-queueHost:
+databaseHost: mongo-prod
+queueHost: rabbitmq-prod

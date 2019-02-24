@@ -1,15 +1,15 @@
 dependencies:
 - name: ui
   repository: file://../ui
-  version: 1.0.0
+  version: 0.0.1
 - name: crawler
   repository: file://../crawler
-  version: 1.0.0
-- name: mongodb
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 0.4.18
+  version: 0.0.1
+- name: mongo
+  repository: file://../mongo
+  version: 3.2.0
 - name: rabbitmq
-  repository: https://kubernetes-charts.storage.googleapis.com
-  version: 4.2.1
-digest: sha256:0695bea053cba6cd02c84679a1fdf474c9e81345d17dd03285bd2a9ea2c61696
-generated: 2019-02-19T14:52:47.153073051+03:00
+  repository: file://../rabbitmq
+  version: 1.0.0
+digest: sha256:5802b78309d78841578998b355069902a889e285e13c3eaf509f883ca65bbe96
+generated: 2019-02-24T17:40:50.96460394+03:00

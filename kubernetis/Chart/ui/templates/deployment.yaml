@@ -2,7 +2,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: {{ template "ui.fullname" . }}
   labels:
     app: crawler
     component: ui-crawler
@@ -33,7 +33,7 @@ spec:
           protocol: TCP
         env:
         - name: MONGO
-          value: mongodb
+          value: {{ .Values.databaseHost | default (printf "%s-mongodb" .Release.Name) }}
         - name: MONGO_PORT
           value: "27017"
         - name: ENV

@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ template "crawler.fullname" . }}
   labels:
-    app: reddit
+    app: crawler
     component: crawler
     release: {{ .Release.Name }}
 spec:
@@ -18,6 +18,6 @@ spec:
     protocol: TCP
     targetPort: 8000
   selector:
-    app: reddit
+    app: crawler
     component: crawler
     release: {{ .Release.Name }}
