@@ -1,0 +1,8 @@
+---
+name: mongodb
+version: 3.2.0
+description: db
+maintainers:
+ - name: Derp Derp
+   email: my@mail.com
+appVersion: 1.0

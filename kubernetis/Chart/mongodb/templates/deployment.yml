@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "mongodb.fullname" . }}
+  labels:
+    app: crawler
+    component: mongodb
+    connect_db: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: mongodb
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      name: mongodb
+      labels:
+        app: crawler
+        component: mongodb
+        release: {{ .Release.Name }}
+        connect_db: "true"
+    spec:
+      containers:
+      - image: mongo:3.2
+        name: mongodb
+        volumeMounts:
+        - name: mongo-disk-{{ .Release.Name }}
+          mountPath: /data/db
+      volumes:
+      - name: mongo-disk-{{ .Release.Name }}
+        gcePersistentDisk:
+            pdName: mongo-disk-{{ .Release.Name }}
+            fsType: ext4
