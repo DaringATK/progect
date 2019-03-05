@@ -10,13 +10,6 @@ docker run -it -d --rm -p 8000:8000 --network project --hostname ui --name ui ui
 ###
 docker run -it -d --rm --network project --name crawler --hostname crawler crawler:0.0.1
 
-
-
-
-
-
-
-
 переменные 
 
 ENV MONGO mongodb
@@ -52,6 +45,11 @@ ENV MONGO_PORT 27017
     tcp:30000-32767
 2) создание диска для монги 
 gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
+#Диск для production
+gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-production
+#Диск для staging
+gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-staging
+
 3) kubectl apply -f mongo-volume.yml
 4) kubectl apply -f mongo-deployment.yml
 5) kubectl apply -f mongo-service.yml
@@ -72,3 +70,36 @@ kubectl get svc
 sudo nano /etc/hosts (/etc/hosts<35.239.145.155 reddit reddit-prometheus reddit-grafana reddit-non-prod production reddit-kibana staging prod)
 helm upgrade prom . -f custom_values.yml --install
 helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
+
+Start Gitlab
+ * cd kubernetis/Chart/gitlab-omnibus
+ * helm install --name gitlab . -f values.yaml
+
+узнать ip gitlab
+ * kubectl get service -n nginx-ingress nginx
+
+В hosts файл добавить 
+ * 35.197.206.71 gitlab-gitlab production dyavolmgn-ui-feature-3 staging
+
+### Gitlab-ci
+В gitlab созданно три проекта:
+ - ui
+ - crawler
+ - reddit-deploy
+
+ ## Проект ui
+В проекте ui хранится код. Настроен ci, в котором билдится docker образ. И проходят тесты. Для разработчиков имеется имеется возможность review, и развертывание тестового контура.
+В файле VERSION выставляется версия образа, по умолчанию latest.
+
+ ## Проект crawler
+В проекте crawler хранится код. Настроен ci, в котором билдится docker образ. И проходят тесты. Для разработчиков имеется имеется возможность review, и развертывание тестового контура.
+В файле VERSION выставляется версия образа, по умолчанию latest.
+
+ ## Проект reddit-deploy
+В проекте reddit-deploy необходим для запуска стендов staging и production. Деплой staging автоматический, production мануальный.
+При деплое устанавливается/обновляется:
+	- ui
+	- crawler
+	- rebbitmq
+	- mongodb
+Развертывание происходит в кубернетис, при помощи helm-2.12.2.
