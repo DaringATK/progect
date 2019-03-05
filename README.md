@@ -103,3 +103,11 @@ Start Gitlab
 	- rebbitmq
 	- mongodb
 Развертывание происходит в кубернетис, при помощи helm-2.12.2.
+
+
+	### Доступ:
+	* Staging
+	- http://staging/
+
+	* Production
+	- http://production/
