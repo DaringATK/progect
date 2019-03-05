@@ -71,7 +71,7 @@ sudo nano /etc/hosts (/etc/hosts<35.239.145.155 reddit reddit-prometheus reddit-
 helm upgrade prom . -f custom_values.yml --install
 helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
 
-  ### Start Gitlab
+ ### Start Gitlab
  * cd kubernetis/Chart/gitlab-omnibus
  * helm install --name gitlab . -f values.yaml
 
@@ -81,7 +81,7 @@ helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set 
 В hosts файл добавить 
  * 35.197.206.71 gitlab-gitlab production dyavolmgn-ui-feature-3 staging
 
- ## Gitlab-ci
+### Gitlab-ci
 В gitlab созданно три проекта:
  - ui
  - crawler
