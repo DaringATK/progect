@@ -62,6 +62,7 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
           Протоколы и порты - Указанные протоколы и порты
           tcp:30000-32767
   2) Cоздание дисков 
+  
       Диск для mongo 
       ```
       gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
