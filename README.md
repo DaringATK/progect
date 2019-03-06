@@ -1,4 +1,4 @@
- ## пререквизиты
+ # пререквизиты
  1) Считаем что у вас уже установлены:
 	- kubectl
 	- helm
@@ -9,7 +9,7 @@
  2) gcloud настроен
  3) Настроено подключение к кластеру
  
- ## переменные 
+ # переменные 
 
 	### переменные crawler:
 	- ENV MONGO mongodb
@@ -47,7 +47,7 @@ crawler
 docker run -it -d --rm --network project --name crawler --hostname crawler crawler:0.0.1
 ```
 
- ## старт приложения в ручном режиме
+ ## старт приложения в ручном режиме в кластере kubernetes
   1) Поднимаем кластер куба 
       ```
       • Тип машины - custom (2 виртуальных ЦП, 5 ГБ памяти)
@@ -98,7 +98,9 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
      kubectl apply -f ui-crawler-deployment.yml
      kubectl apply -f ui-crawler-service.yml
      ```
-     
+
+# Gitlab-ci
+  
   ### Start Gitlab
  * cd kubernetis/Chart/gitlab-omnibus
  * helm install --name gitlab . -f values.yaml
@@ -142,7 +144,7 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
 	- http://production/
 
 
- ## Старт мониторинга
+ # Mониторинг
 
 1) Старт prometheus
 ```
