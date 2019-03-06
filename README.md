@@ -37,7 +37,8 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
 ```
 
  ## старт приложения в ручном режиме
-   1) Поднимаем кластер куба 
+  1) Поднимаем кластер куба 
+      ```
       • Тип машины - небольшая машина (1,7 ГБ) (для экономии ресурсов)
       • Размер - 4
       • Базовая аутентификация - отключена
@@ -49,7 +50,7 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
           • Диапазоны IP-адресов источников  - 0.0.0.0/0
           Протоколы и порты - Указанные протоколы и порты
           tcp:30000-32767
-   2) Cоздание дисков 
+  2) Cоздание дисков 
       Диск для mongo 
       ```
       gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
@@ -62,25 +63,17 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
       ```
       gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-staging
       ```
-   3) Применение манифестов
+  3) Применение манифестов
    - старт mongo
      ```
      kubectl apply -f mongo-volume.yml 
-     ```
-     ```
      kubectl apply -f mongo-deployment.yml
-     ```
-     ```
      kubectl apply -f mongo-service.yml
      ```
    - старт очереди
      ```
      kubectl apply -f rabbitmq-deployment.yml
-     ```
-     ```
      kubectl apply -f rabbitmq-service.yml
-     ```
-     ```
      kubectl apply -f rabbitmq-ingress.yml
      ```
    - старт адаптера 
