@@ -31,48 +31,69 @@ ui crawler
 ```
 docker run -it -d --rm -p 8000:8000 --network project --hostname ui --name ui ui:0.0.1
 ```
+crawler
+```
+docker run -it -d --rm --network project --name crawler --hostname crawler crawler:0.0.1
+```
 
  ## старт приложения в ручном режиме
-1) Поднимаем кластер куба 
-• Тип машины - небольшая машина (1,7 ГБ) (для экономии ресурсов)
-• Размер - 2
-• Базовая аутентификация - отключена
-• Устаревшие права доступа - отключено
-• Панель управления Kubernetes - отключено
-• создать правило VPS:
-    Название - произвольно, но понятно
-    • Целевые экземпляры - все экземпляры в сети
-    • Диапазоны IP-адресов источников  - 0.0.0.0/0
-    Протоколы и порты - Указанные протоколы и порты
-    tcp:30000-32767
-2) создание диска для монги 
-gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
-#Диск для production
-gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-production
-#Диск для staging
-gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-staging
-
-3) kubectl apply -f mongo-volume.yml
-4) kubectl apply -f mongo-deployment.yml
-5) kubectl apply -f mongo-service.yml
-6) kubectl apply -f rabbitmq-deployment.yml
-7) kubectl apply -f rabbitmq-service.yml
-8) kubectl apply -f rabbitmq-ingress.yml
-9) kubectl apply -f ui-crawler-deployment.yml
-10) kubectl apply -f ui-crawler-service.yml
-11) kubectl apply -f crawler-deployment.yml
-12) kubectl apply -f crawler-service.yml
-
-старт мониторинга
-kubectl apply -f tiller.yml
-helm init --service-account tiller
-kubectl get pods -n kube-system --selector app=helm
-helm install stable/nginx-ingress --name nginx
-kubectl get svc
-sudo nano /etc/hosts (/etc/hosts<35.239.145.155 reddit reddit-prometheus reddit-grafana reddit-non-prod production reddit-kibana staging prod)
-helm upgrade prom . -f custom_values.yml --install
-helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
-
+   1) Поднимаем кластер куба 
+      • Тип машины - небольшая машина (1,7 ГБ) (для экономии ресурсов)
+      • Размер - 4
+      • Базовая аутентификация - отключена
+      • Устаревшие права доступа - отключено
+      • Панель управления Kubernetes - отключено
+      • создать правило VPS:
+          Название - произвольно, но понятно
+          • Целевые экземпляры - все экземпляры в сети
+          • Диапазоны IP-адресов источников  - 0.0.0.0/0
+          Протоколы и порты - Указанные протоколы и порты
+          tcp:30000-32767
+   2) Cоздание дисков 
+      Диск для mongo 
+      ```
+      gcloud compute disks create --size=25GB --zone=us-central1-a crawler-mongo-disk
+      ```
+      Диск для production
+      ```
+      gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-production
+      ```
+      Диск для staging
+      ```
+      gcloud compute disks create --size=25GB --zone=us-central1-a mongo-disk-staging
+      ```
+   3) Применение манифестов
+   - старт mongo
+     ```
+     kubectl apply -f mongo-volume.yml 
+     ```
+     ```
+     kubectl apply -f mongo-deployment.yml
+     ```
+     ```
+     kubectl apply -f mongo-service.yml
+     ```
+   - старт очереди
+     ```
+     kubectl apply -f rabbitmq-deployment.yml
+     ```
+     ```
+     kubectl apply -f rabbitmq-service.yml
+     ```
+     ```
+     kubectl apply -f rabbitmq-ingress.yml
+     ```
+   - старт адаптера 
+     ```
+     kubectl apply -f crawler-deployment.yml
+     kubectl apply -f crawler-service.yml
+     ```
+   - старт адаптера 
+     ```
+     kubectl apply -f ui-crawler-deployment.yml
+     kubectl apply -f ui-crawler-service.yml
+     ```
+     
   ### Start Gitlab
  * cd kubernetis/Chart/gitlab-omnibus
  * helm install --name gitlab . -f values.yaml
@@ -99,6 +120,7 @@ helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set 
 
  ## Проект reddit-deploy
 В проекте reddit-deploy необходим для запуска стендов staging и production. Деплой staging автоматический, production мануальный.
+
 При деплое устанавливается/обновляется:
 	- ui
 	- crawler
@@ -113,3 +135,47 @@ helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set 
 
 	* Production
 	- http://production/
+
+
+ ## Старт мониторинга
+
+1) Ставим прометеус
+```
+helm upgrade prom Chart/prometheus/ -f Chart/prometheus/custom_values.yml --install
+```
+2) Проверяем
+```
+http://reddit-prometheus/targets
+```
+3) Ставим графану
+```
+helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
+```
+4) Проверяем
+```
+http://reddit-grafana
+```
+5) Импортируем дашборд
+
+
+ ## Старт EFK
+
+1) узнаем имя ноды(нужна самая толстая)
+```
+kubectl get nodes
+```
+2) установим лейбл
+```
+kubectl label node gke-project-default-pool-ab694650-5cfm elastichost=true
+```
+3) Поднимаем флюент и эластик
+```
+helm install --name efk efk/
+```
+4) Поднимаем кибану 
+```
+helm upgrade kibana . --install --set "env.ELASTICSEARCH_URL=http://elasticsearch-logging:9200"
+```
+смотрим ингрессы и определяем адрес кибаны
+
+5) устанавливаем паттерн * и Time Filter field name = @timestamp
