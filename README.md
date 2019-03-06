@@ -1,4 +1,4 @@
- # пререквизиты
+ # Пререквизиты
  1) Считаем что у вас уже установлены:
 	- kubectl
 	- helm
@@ -9,9 +9,9 @@
  2) gcloud настроен
  3) Настроено подключение к кластеру
  
- # переменные 
+ # Переменные 
 
-	### переменные crawler:
+	### Переменные crawler:
 	- ENV MONGO mongodb
 	- ENV MONGO_PORT 27017
 	- ENV RMQ_HOST rabbitmq
@@ -21,7 +21,7 @@
 	- ENV CHECK_INTERVAL 60
 	- ENV EXCLUDE_URLS '.*github.com'
 
-	### переменные UI:
+	### Переменные UI:
 	- ENV MONGO mongodb
 	- ENV MONGO_PORT 27017
 
@@ -47,8 +47,8 @@ crawler
 docker run -it -d --rm --network project --name crawler --hostname crawler crawler:0.0.1
 ```
 
- ## старт приложения в ручном режиме в кластере kubernetes
-  1) Поднимаем кластер куба 
+ ## Старт приложения в ручном режиме в кластере kubernetes
+  1) Создание кластера 
       ```
       • Тип машины - custom (2 виртуальных ЦП, 5 ГБ памяти)
       • Размер - 4
@@ -154,7 +154,7 @@ helm upgrade prom Chart/prometheus/ -f Chart/prometheus/custom_values.yml --inst
 ```
 http://reddit-prometheus/targets
 ```
-2) Ставим графану
+2) Старт grafana
 ```
 helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
 ```
@@ -163,7 +163,7 @@ helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set 
 http://reddit-grafana
 ```
 5) Импортируем дашборд
-дашборд находится в:
+дашборд находится:
 ```
 ./progect/kubernetis/Chart/grafana/dashboards/dashboard crawler
 ```
@@ -186,7 +186,7 @@ helm install --name efk efk/
 ```
 helm upgrade kibana . --install --set "env.ELASTICSEARCH_URL=http://elasticsearch-logging:9200"
 ```
-смотрим ингрессы и определяем адрес кибаны
+Определяем адрес kibana
 ```
 kubectl get ingress
 ```
