@@ -1,36 +1,37 @@
-###mongodb
-docker run -it --rm -d --hostname mongodb  --name mongodb --network project -p 27017:27017 mongo:3.2
+ ## переменные 
 
-###RABBITMQ
-docker run -it -d -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin --hostname rabbitmq --name rabbitmq --network project rabbitmq:3-management
+	### переменные crawler:
+	- ENV MONGO mongodb
+	- ENV MONGO_PORT 27017
+	- ENV RMQ_HOST rabbitmq
+	- ENV RMQ_QUEUE derp
+	- ENV RMQ_USERNAME derp
+	- ENV RMQ_PASSWORD derp
+	- ENV CHECK_INTERVAL 60
+	- ENV EXCLUDE_URLS '.*github.com'
 
-###ui
-docker run -it -d --rm -p 8000:8000 --network project --hostname ui --name ui ui:0.0.1
+	### переменные UI:
+	- ENV MONGO mongodb
+	- ENV MONGO_PORT 27017
 
-###
+## Старт приложения с помощью  docker
+	### network
+```	
 docker run -it -d --rm --network project --name crawler --hostname crawler crawler:0.0.1
-
-переменные 
-
-ENV MONGO mongodb
-ENV MONGO_PORT 27017
-ENV RMQ_HOST rabbitmq
-ENV RMQ_QUEUE derp
-ENV RMQ_USERNAME derp
-ENV RMQ_PASSWORD derp
-ENV CHECK_INTERVAL 60
-ENV EXCLUDE_URLS '.*github.com'
-
-
-переменные UI
-
-
-ENV MONGO mongodb
-ENV MONGO_PORT 27017
-
-
-
-старт приложения
+```
+	### mongodb
+```
+docker run -it --rm -d --hostname mongodb  --name mongodb --network project -p 27017:27017 mongo:3.2
+```
+	### RABBITMQ
+```
+docker run -it -d -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin --hostname rabbitmq --name rabbitmq --network project rabbitmq:3-management
+```
+	### ui
+```
+docker run -it -d --rm -p 8000:8000 --network project --hostname ui --name ui ui:0.0.1
+```
+ ## старт приложения в ручном режиме
 1) Поднимаем кластер куба 
 • Тип машины - небольшая машина (1,7 ГБ) (для экономии ресурсов)
 • Размер - 2
