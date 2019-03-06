@@ -1,3 +1,14 @@
+ ## пререквизиты
+ 1) Считаем что у вас уже установлены:
+	- kubectl
+	- helm
+	- docker
+	- docker-compose
+	- git
+	- gcloud
+ 2) gcloud настроен
+ 3) Настроено подключение к кластеру
+ 
  ## переменные 
 
 	### переменные crawler:
@@ -95,7 +106,7 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
  * kubectl get service -n nginx-ingress nginx
 
 В hosts файл добавить 
- * 35.197.206.71 gitlab-gitlab production dyavolmgn-ui-feature-3 staging
+ * #ip gitlab-gitlab production dyavolmgn-ui-feature-3 staging
 
  ## Gitlab-ci
 В gitlab созданно три проекта:
