@@ -39,7 +39,7 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
  ## старт приложения в ручном режиме
   1) Поднимаем кластер куба 
       ```
-      • Тип машины - небольшая машина (1,7 ГБ) (для экономии ресурсов)
+      • Тип машины - custom (2 виртуальных ЦП, 5 ГБ памяти)
       • Размер - 4
       • Базовая аутентификация - отключена
       • Устаревшие права доступа - отключено
@@ -132,43 +132,48 @@ docker run -it -d --rm --network project --name crawler --hostname crawler crawl
 
  ## Старт мониторинга
 
-1) Ставим прометеус
+1) Старт prometheus
 ```
 helm upgrade prom Chart/prometheus/ -f Chart/prometheus/custom_values.yml --install
 ```
-2) Проверяем
+Проверяем
 ```
 http://reddit-prometheus/targets
 ```
-3) Ставим графану
+2) Ставим графану
 ```
 helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
 ```
-4) Проверяем
+Проверяем
 ```
 http://reddit-grafana
 ```
 5) Импортируем дашборд
-
+дашборд находится в:
+```
+./progect/kubernetis/Chart/grafana/dashboards/dashboard crawler
+```
 
  ## Старт EFK
 
-1) узнаем имя ноды(нужна самая толстая)
+1) Получить имя ноды
 ```
 kubectl get nodes
 ```
-2) установим лейбл
+2) Установить лейбл на произвольную ноду 
 ```
-kubectl label node gke-project-default-pool-ab694650-5cfm elastichost=true
+kubectl label node #name_node elastichost=true
 ```
-3) Поднимаем флюент и эластик
+3) Старт флюент и эластик
 ```
 helm install --name efk efk/
 ```
-4) Поднимаем кибану 
+4) Старт kibana 
 ```
 helm upgrade kibana . --install --set "env.ELASTICSEARCH_URL=http://elasticsearch-logging:9200"
 ```
 смотрим ингрессы и определяем адрес кибаны
-
+```
+kubectl get ingress
+```
 5) устанавливаем паттерн * и Time Filter field name = @timestamp
