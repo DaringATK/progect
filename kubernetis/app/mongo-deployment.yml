@@ -27,10 +27,10 @@ spec:
       - image: mongo:3.2
         name: mongo
         volumeMounts:
-        - name: mongo-gce-pd-storage
+        - name: crawler-mongo-disk
           mountPath: /data/db
       volumes:
-      - name: mongo-gce-pd-storage
+      - name: crawler-mongo-disk
         gcePersistentDisk:
-            pdName: reddit-mongo-disk
+            pdName: crawler-mongo-disk
             fsType: ext4

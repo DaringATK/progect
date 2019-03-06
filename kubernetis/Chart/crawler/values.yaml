@@ -1,0 +1,7 @@
+---
+image:
+ repository: dyavolmgn/crawler
+ tag: 0.0.1
+
+databaseHost:
+queueHost:

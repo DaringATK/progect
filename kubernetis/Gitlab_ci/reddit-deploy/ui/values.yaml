@@ -1,0 +1,7 @@
+image:
+ repository: dyavolmgn/ui
+ tag: 0.0.1
+
+databaseHost:
+ingress:
+  class: nginx

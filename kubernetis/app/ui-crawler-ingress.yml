@@ -3,11 +3,11 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ui
-  annotations:
-    kubernetes.io/ingress.allow-http: "false"
 spec:
-  tls:
-  - secretName: ui-crawler-ingress
-  backend:
-    serviceName: ui-crawler
-    servicePort: 8000
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: ui-crawler          
+          servicePort: 8000

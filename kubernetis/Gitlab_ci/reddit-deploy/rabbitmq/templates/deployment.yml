@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "rabbitmq.fullname" . }}
+  labels:
+    app: crawler
+    component: rabbitmq
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+      component: rabbitmq
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      name: rabbitmq
+      labels:
+        app: crawler
+        component: rabbitmq
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - image: rabbitmq:3-management
+        name: rabbitmq
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: admin
+        - name: RABBITMQ_DEFAULT_PASS
+          value: admin
